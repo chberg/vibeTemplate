@@ -1,0 +1,40 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: |
+          pip install ruff mypy pytest
+
+      - name: Install OPA
+        run: |
+          curl -L -o /usr/local/bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
+          chmod +x /usr/local/bin/opa
+
+      - name: Run verify.sh
+        run: |
+          chmod +x scripts/agentctl/verify.sh
+          ./scripts/agentctl/verify.sh
+
+      - name: Block agent branches from merging without report
+        if: startsWith(github.head_ref, 'agent/')
+        run: |
+          TICKET="${GITHUB_HEAD_REF#agent/}"
+          if [ ! -f ".agents/reports/${TICKET}.md" ]; then
+            echo "Missing .agents/reports/${TICKET}.md — agent branches must include a report."
+            exit 1
+          fi
