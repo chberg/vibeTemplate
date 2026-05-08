@@ -32,6 +32,7 @@ Before implementation:
 3. Read `.skills/vibe-ops-architecture/SKILL.md` if implementing product code.
 4. Identify target files and tests.
 5. State a minimal implementation plan in your first message.
+6. If working in a worktree alongside other agents on parallel tickets, declare in your first message which files you'll modify. The human will coordinate sequential vs parallel merge.
 
 During implementation:
 1. Make the smallest coherent diff.

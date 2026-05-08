@@ -1,5 +1,7 @@
 # Example OPA policy. Replace once you have real product modules.
 # Test with: opa test policy/
+# Note: OPA <1.0 uses `allow { ... }`. OPA 1.0+ allows `allow if { ... }`.
+# See ADR-0002 in projects derived from this template if you hit issues.
 
 package vibe.example
 
